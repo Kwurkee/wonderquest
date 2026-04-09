@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>WonderQuest</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fraunces:ital,wght@0,700;1,700&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #1D9E75; --green-dark: #0F6E56; --green-light: #E1F5EE;
+    --amber: #F5A623; --amber-light: #FEF3DC;
+    --text: #1a1a2e; --text-muted: #6b7280;
+    --bg: #FAFAF7; --card: #ffffff; --border: rgba(0,0,0,0.08);
+    --radius: 16px; --radius-sm: 10px;
+  }
+  body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 3rem; }
+  .header { background: linear-gradient(160deg, #0a3d2e 0%, #1D9E75 100%); padding: 2.5rem 1.5rem 3.5rem; text-align: center; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,0.05); }
+  .header::after { content: ''; position: absolute; bottom: -60px; left: -30px; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,0.04); }
+  .logo { font-family: 'Fraunces', serif; font-size: 2.6rem; color: #fff; letter-spacing: -1px; line-height: 1; }
+  .logo span { color: #7EEFC5; }
+  .tagline { font-size: 0.95rem; color: rgba(255,255,255,0.75); margin-top: 6px; font-weight: 600; }
+  .stars { margin-top: 14px; font-size: 1.1rem; letter-spacing: 4px; }
+  .main { max-width: 480px; margin: -1.8rem auto 0; padding: 0 1rem; position: relative; z-index: 10; }
+  .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
+  .age-row { display: flex; align-items: center; gap: 12px; background: var(--green-light); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 1.25rem; }
+  .age-emoji { font-size: 1.2rem; }
+  .age-label { font-size: 0.85rem; font-weight: 700; color: var(--green-dark); flex: 1; }
+  .age-select { font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--green-dark); background: white; border: 1.5px solid var(--green); border-radius: 8px; padding: 5px 10px; cursor: pointer; outline: none; }
+  .mode-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.25rem; }
+  .tab { padding: 1rem; border-radius: var(--radius-sm); border: 2px solid var(--border); background: #f9f9f7; cursor: pointer; text-align: center; transition: all 0.18s ease; }
+  .tab:hover { border-color: var(--green); background: var(--green-light); }
+  .tab.active { border-color: var(--green); background: var(--green-light); box-shadow: 0 0 0 3px rgba(29,158,117,0.12); }
+  .tab-icon { font-size: 1.6rem; display: block; margin-bottom: 6px; }
+  .tab-title { font-size: 0.88rem; font-weight: 800; color: var(--text); display: block; }
+  .tab-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 2px; display: block; font-weight: 600; }
+  .upload-zone { border: 2.5px dashed rgba(29,158,117,0.35); border-radius: var(--radius-sm); padding: 2rem 1rem; text-align: center; cursor: pointer; position: relative; overflow: hidden; background: #fafff9; transition: border-color 0.18s, background 0.18s; }
+  .upload-zone:hover { border-color: var(--green); background: var(--green-light); }
+  .upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+  .upload-icon { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+  .upload-text { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+  .upload-hint { font-size: 0.78rem; color: var(--text-muted); margin-top: 4px; font-weight: 600; }
+  .preview-img { width: 100%; border-radius: var(--radius-sm); margin-top: 1rem; max-height: 240px; object-fit: cover; display: none; border: 2px solid var(--green-light); }
+  .location-panel { display: none; text-align: center; padding: 1.5rem 1rem; background: #E8F4FD; border-radius: var(--radius-sm); border: 2px solid rgba(29,158,117,0.15); }
+  .loc-icon { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+  .loc-status { font-size: 0.9rem; font-weight: 700; color: var(--text); }
+  .loc-coords { font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; font-family: monospace; font-weight: 600; }
+  .btn-go { display: none; width: 100%; margin-top: 1.1rem; padding: 15px; border-radius: var(--radius-sm); border: none; background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); color: white; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(29,158,117,0.35); transition: transform 0.12s; }
+  .btn-go:hover { transform: translateY(-1px); }
+  .btn-go:active { transform: scale(0.98); }
+  .loading { display: none; text-align: center; padding: 2rem 1rem; }
+  .dots { display: inline-flex; gap: 7px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); animation: pop 1.3s ease-in-out infinite; }
+  .dot:nth-child(2) { animation-delay: 0.2s; background: var(--amber); }
+  .dot:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes pop { 0%,80%,100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1.1); opacity: 1; } }
+  .loading-msg { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-top: 12px; }
+  .result-card { display: none; background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: 0 4px 24px rgba(0,0,0,0.07); margin-top: 1rem; }
+  .result-header { background: linear-gradient(135deg, #0a3d2e, #1D9E75); padding: 1rem 1.25rem; display: flex; align-items: center; gap: 10px; }
+  .result-header-icon { font-size: 1.4rem; }
+  .result-header-title { font-family: 'Fraunces', serif; font-size: 1.1rem; color: white; }
+  .result-body { padding: 1.25rem; }
+  .story-text { font-size: 1rem; line-height: 1.75; color: var(--text); font-weight: 600; }
+  .quest-section { display: none; margin-top: 1.25rem; padding-top: 1.25rem; border-top: 2px dashed rgba(29,158,117,0.2); }
+  .quest-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--amber-light); color: #92400e; font-size: 0.78rem; font-weight: 800; padding: 5px 12px; border-radius: 20px; margin-bottom: 10px; border: 1.5px solid rgba(245,166,35,0.3); }
+  .quest-text { font-size: 0.97rem; line-height: 1.75; color: var(--text); font-weight: 600; }
+  .btn-quest { width: 100%; padding: 13px; border-radius: var(--radius-sm); border: 2.5px solid var(--amber); background: var(--amber-light); color: #92400e; font-family: 'Nunito', sans-serif; font-size: 0.95rem; font-weight: 800; cursor: pointer; margin-top: 1.1rem; transition: background 0.15s, transform 0.1s; display: none; }
+  .btn-quest:hover { background: #fde9b0; transform: translateY(-1px); }
+  .btn-new { width: 100%; padding: 11px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: transparent; color: var(--text-muted); font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 10px; transition: background 0.15s; }
+  .btn-new:hover { background: #f3f4f6; }
+  .error-msg { display: none; font-size: 0.85rem; font-weight: 700; color: #991b1b; background: #fef2f2; border: 1.5px solid #fecaca; border-radius: var(--radius-sm); padding: 10px 14px; margin-top: 1rem; }
+  .footer { text-align: center; margin-top: 2.5rem; font-size: 0.78rem; color: var(--text-muted); font-weight: 600; }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="logo">Wonder<span>Quest</span></div>
+  <div class="tagline">Point at the world. Discover its magic.</div>
+  <div class="stars">✦ ✦ ✦</div>
+</div>
+<div class="main">
+  <div class="card">
+    <div class="age-row">
+      <span class="age-emoji">🧒</span>
+      <span class="age-label">Explorer age</span>
+      <select class="age-select" id="ageSelect">
+        <option value="5-7">Ages 5–7</option>
+        <option value="8-10">Ages 8–10</option>
+        <option value="11-13">Ages 11–13</option>
+      </select>
+    </div>
+    <div class="mode-tabs">
+      <div class="tab active" id="tabPhoto" onclick="setMode('photo')">
+        <span class="tab-icon">📷</span>
+        <span class="tab-title">Take a photo</span>
+        <span class="tab-sub">Point at anything</span>
+      </div>
+      <div class="tab" id="tabLocation" onclick="setMode('location')">
+        <span class="tab-icon">📍</span>
+        <span class="tab-title">Use my location</span>
+        <span class="tab-sub">Find nearby wonders</span>
+      </div>
+    </div>
+    <div id="photoPanel">
+      <div class="upload-zone">
+        <input type="file" accept="image/*" id="fileInput" onchange="handleFile(event)" capture="environment" />
+        <span class="upload-icon">🖼️</span>
+        <div class="upload-text">Tap to take a photo or choose one</div>
+        <div class="upload-hint">A statue, building, sign — anything interesting</div>
+      </div>
+      <img id="previewImg" class="preview-img" alt="Your photo" />
+    </div>
+    <div id="locationPanel" class="location-panel">
+      <span class="loc-icon">🗺️</span>
+      <div class="loc-status" id="locStatus">Finding your location...</div>
+      <div class="loc-coords" id="locCoords"></div>
+    </div>
+    <div class="error-msg" id="errorMsg"></div>
+    <button class="btn-go" id="goBtn" onclick="startAdventure()">✨ Start the adventure</button>
+    <div class="loading" id="loading">
+      <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      <div class="loading-msg" id="loadingMsg">Discovering the story...</div>
+    </div>
+  </div>
+  <div class="result-card" id="resultCard">
+    <div class="result-header">
+      <span class="result-header-icon">📖</span>
+      <span class="result-header-title">The story</span>
+    </div>
+    <div class="result-body">
+      <div class="story-text" id="storyText"></div>
+      <div class="quest-section" id="questSection">
+        <div class="quest-badge">🗺️ Quest unlocked</div>
+        <div class="quest-text" id="questText"></div>
+      </div>
+      <button class="btn-quest" id="questBtn" onclick="getQuest()">🗺️ Unlock a quest</button>
+      <button class="btn-new" onclick="resetApp()">↩ Start a new adventure</button>
+    </div>
+  </div>
+  <div class="footer">WonderQuest · Making the world magical for curious kids</div>
+</div>
+<script>
+  let currentMode = 'photo';
+  let imageBase64 = null;
+  let imageMediaType = 'image/jpeg';
+  let locationData = null;
+  let currentStory = '';
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('tabPhoto').classList.toggle('active', mode === 'photo');
+    document.getElementById('tabLocation').classList.toggle('active', mode === 'location');
+    document.getElementById('photoPanel').style.display = mode === 'photo' ? 'block' : 'none';
+    document.getElementById('locationPanel').style.display = mode === 'location' ? 'block' : 'none';
+    imageBase64 = null; locationData = null;
+    hideError();
+    document.getElementById('goBtn').style.display = 'none';
+    document.getElementById('previewImg').style.display = 'none';
+    document.getElementById('resultCard').style.display = 'none';
+    document.getElementById('loading').style.display = 'none';
+    if (mode === 'location') {
+      document.getElementById('goBtn').textContent = '📍 Find nearby wonders';
+      getLocation();
+    } else {
+      document.getElementById('goBtn').textContent = '✨ Start the adventure';
+    }
+  }
+
+  function getLocation() {
+    const status = document.getElementById('locStatus');
+    status.textContent = 'Getting your location...';
+    if (!navigator.geolocation) { status.textContent = 'Location not supported on this device.'; return; }
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        locationData = { lat: pos.coords.latitude.toFixed(5), lon: pos.coords.longitude.toFixed(5) };
+        status.textContent = 'Location found — ready to explore!';
+        document.getElementById('locCoords').textContent = locationData.lat + ', ' + locationData.lon;
+        document.getElementById('goBtn').style.display = 'block';
+      },
+      () => { status.textContent = 'Could not get location. Please allow location access.'; }
+    );
+  }
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    imageMediaType = file.type || 'image/jpeg';
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const full = ev.target.result;
+      imageBase64 = full.split(',')[1];
+      const img = document.getElementById('previewImg');
+      img.src = full; img.style.display = 'block';
+      document.getElementById('goBtn').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function showError(msg) { const el = document.getElementById('errorMsg'); el.textContent = msg; el.style.display = 'block'; }
+  function hideError() { document.getElementById('errorMsg').style.display = 'none'; }
+
+  async function callClaude(messages) {
+    const res = await fetch('/.netlify/functions/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages })
+    });
+    if (!res.ok) throw new Error('Server error: ' + res.status);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    return data.content[0].text;
+  }
+
+  async function startAdventure() {
+    hideError();
+    const age = document.getElementById('ageSelect').value;
+    document.getElementById('goBtn').style.display = 'none';
+    document.getElementById('resultCard').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('loadingMsg').textContent = 'Discovering the story...';
+
+    let messages;
+    if (currentMode === 'photo' && imageBase64) {
+      messages = [{ role: 'user', content: [
+        { type: 'image', source: { type: 'base64', media_type: imageMediaType, data: imageBase64 } },
+        { type: 'text', text: `You are WonderQuest, a magical storytelling guide for children aged ${age}. Look at this photo and:
+1. Identify what is in the image — statue, building, landmark, or anything interesting.
+2. Tell a short, magical, engaging story about it for a child aged ${age}. Keep it to 3-4 sentences. Use vivid imagination and wonder. Speak directly to the child as "you".
+3. End with one curious question to spark the child's imagination.
+Keep language very simple and exciting. No adult vocabulary. Be warm, playful, and full of wonder.` }
+      ]}];
+    } else if (currentMode === 'location' && locationData) {
+      messages = [{ role: 'user', content: `You are WonderQuest, a magical storytelling guide for children aged ${age}. The explorer is at coordinates ${locationData.lat}, ${locationData.lon}.
+1. Based on these coordinates, identify the city or area.
+2. Tell a short, magical, engaging story about the most famous or interesting landmark nearby. Keep it to 3-4 sentences. Speak directly to the child as "you".
+3. End with one curious question to spark their imagination.
+Keep language very simple. Be warm, playful, and full of wonder.` }];
+    } else {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('goBtn').style.display = 'block';
+      showError(currentMode === 'photo' ? 'Please upload a photo first.' : 'Please allow location access first.');
+      return;
+    }
+
+    try {
+      currentStory = await callClaude(messages);
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('storyText').textContent = currentStory;
+      document.getElementById('questSection').style.display = 'none';
+      document.getElementById('questBtn').style.display = 'block';
+      document.getElementById('resultCard').style.display = 'block';
+    } catch(err) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('goBtn').style.display = 'block';
+      showError('Something went wrong: ' + err.message);
+    }
+  }
+
+  async function getQuest() {
+    const age = document.getElementById('ageSelect').value;
+    document.getElementById('questBtn').style.display = 'none';
+    document.getElementById('loading').style.display = 'block';
+    document.getElementById('loadingMsg').textContent = 'Creating your quest...';
+
+    const messages = [{ role: 'user', content: `You are WonderQuest. A child aged ${age} just heard this story: "${currentStory}"
+Now create a short, fun quest for them to complete nearby. The quest should:
+- Have 2-3 simple steps or things to find and notice
+- Be achievable on foot in 10-15 minutes
+- Feel like a real treasure hunt or adventure
+- End with a clear victory moment — something to spot, count, or discover
+- Be written directly to the child as "you", with excitement and magic
+Keep it to 4-5 sentences. Simple words. Big adventure energy.` }];
+
+    try {
+      const questText = await callClaude(messages);
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('questText').textContent = questText;
+      document.getElementById('questSection').style.display = 'block';
+    } catch(err) {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('questBtn').style.display = 'block';
+      showError('Could not create the quest: ' + err.message);
+    }
+  }
+
+  function resetApp() {
+    document.getElementById('resultCard').style.display = 'none';
+    document.getElementById('previewImg').style.display = 'none';
+    document.getElementById('fileInput').value = '';
+    document.getElementById('loading').style.display = 'none';
+    imageBase64 = null; locationData = null; currentStory = '';
+    hideError();
+    if (currentMode === 'photo') { document.getElementById('goBtn').style.display = 'none'; }
+    else { getLocation(); }
+  }
+
+  setMode('photo');
+</script>
+</body>
+</html>
