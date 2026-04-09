@@ -19,7 +19,6 @@
   }
   body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding-bottom: 3rem; }
 
-  /* Header */
   .header { background: linear-gradient(160deg, #0a3d2e 0%, #1D9E75 100%); padding: 2rem 1.5rem 3rem; text-align: center; position: relative; overflow: hidden; }
   .header::before { content: ''; position: absolute; top: -40px; right: -40px; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,0.05); }
   .header::after { content: ''; position: absolute; bottom: -60px; left: -30px; width: 220px; height: 220px; border-radius: 50%; background: rgba(255,255,255,0.04); }
@@ -28,15 +27,13 @@
   .tagline { font-size: 0.9rem; color: rgba(255,255,255,0.75); margin-top: 6px; font-weight: 600; }
   .stars { margin-top: 10px; font-size: 1rem; letter-spacing: 4px; }
 
-  /* Main container */
   .main { max-width: 480px; margin: -1.5rem auto 0; padding: 0 1rem; position: relative; z-index: 10; }
   .card { background: var(--card); border-radius: var(--radius); border: 1px solid var(--border); padding: 1.5rem; box-shadow: 0 4px 24px rgba(0,0,0,0.07); }
 
-  /* Screens */
   .screen { display: none; }
   .screen.active { display: block; }
 
-  /* Profile screen */
+  /* Profile */
   .profile-hero { text-align: center; margin-bottom: 1.5rem; }
   .profile-emoji { font-size: 3rem; display: block; margin-bottom: 8px; }
   .profile-title { font-family: 'Fraunces', serif; font-size: 1.4rem; color: var(--text); }
@@ -49,7 +46,7 @@
   .age-btn { padding: 10px; border-radius: var(--radius-xs); border: 2px solid var(--border); background: #f9f9f7; cursor: pointer; text-align: center; font-family: 'Nunito', sans-serif; font-size: 0.85rem; font-weight: 800; color: var(--text-muted); transition: all 0.15s; }
   .age-btn.selected { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
 
-  /* Home screen */
+  /* Home */
   .explorer-badge { display: flex; align-items: center; gap: 10px; background: var(--green-light); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 1.25rem; }
   .explorer-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--green); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
   .explorer-name { font-size: 0.88rem; font-weight: 800; color: var(--green-dark); }
@@ -77,10 +74,11 @@
   .loc-status { font-size: 0.9rem; font-weight: 700; color: var(--text); }
   .loc-coords { font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; font-family: monospace; font-weight: 600; }
 
-  /* Story screen */
+  /* Story screens */
   .story-img { width: 100%; border-radius: var(--radius-sm); margin-bottom: 1.25rem; max-height: 200px; object-fit: cover; display: none; }
   .story-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 8px; }
   .story-text { font-size: 1rem; line-height: 1.8; color: var(--text); font-weight: 600; white-space: pre-wrap; }
+  .chapter-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--amber-light); color: #92400e; font-size: 0.78rem; font-weight: 800; padding: 5px 12px; border-radius: 20px; margin-bottom: 12px; border: 1.5px solid rgba(245,166,35,0.3); }
 
   /* Direction choices */
   .directions-title { font-family: 'Fraunces', serif; font-size: 1.1rem; color: var(--text); margin-bottom: 4px; }
@@ -89,10 +87,7 @@
   .direction-btn:hover { border-color: var(--amber); background: var(--amber-light); transform: translateX(4px); }
   .direction-btn:last-child { margin-bottom: 0; }
 
-  /* Deep story */
-  .chapter-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--amber-light); color: #92400e; font-size: 0.78rem; font-weight: 800; padding: 5px 12px; border-radius: 20px; margin-bottom: 12px; border: 1.5px solid rgba(245,166,35,0.3); }
-
-  /* Quest screen */
+  /* Quest */
   .quest-progress { display: flex; align-items: center; gap: 8px; margin-bottom: 1.25rem; }
   .quest-step-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.78rem; font-weight: 800; flex-shrink: 0; }
   .quest-step-dot.done { background: var(--green); color: white; }
@@ -104,11 +99,11 @@
   .quest-narrative { font-size: 0.95rem; line-height: 1.75; color: var(--text); font-weight: 600; margin-bottom: 1.25rem; padding: 1rem; background: var(--purple-light); border-radius: var(--radius-sm); border-left: 3px solid var(--purple); white-space: pre-wrap; }
   .quest-question { font-size: 1rem; font-weight: 800; color: var(--text); margin-bottom: 1rem; }
   .choice-btn { width: 100%; padding: 12px 16px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: #f9f9f7; cursor: pointer; text-align: left; font-family: 'Nunito', sans-serif; font-size: 0.92rem; font-weight: 700; color: var(--text); margin-bottom: 8px; transition: all 0.15s; display: flex; align-items: center; gap: 10px; }
-  .choice-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+  .choice-btn:hover:not(:disabled) { border-color: var(--blue); background: var(--blue-light); }
   .choice-btn.correct { border-color: var(--green); background: var(--green-light); color: var(--green-dark); }
   .choice-btn.wrong { border-color: var(--red); background: var(--red-light); color: var(--red); }
-  .choice-btn:disabled { cursor: not-allowed; opacity: 0.6; }
-  .choice-letter { width: 24px; height: 24px; border-radius: 50%; background: var(--border); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; flex-shrink: 0; }
+  .choice-btn:disabled { cursor: not-allowed; }
+  .choice-letter { width: 24px; height: 24px; border-radius: 50%; background: rgba(0,0,0,0.08); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; flex-shrink: 0; }
 
   .answer-feedback { padding: 1rem; border-radius: var(--radius-sm); margin-top: 1rem; font-size: 0.92rem; font-weight: 700; line-height: 1.6; display: none; white-space: pre-wrap; }
   .answer-feedback.correct { background: var(--green-light); color: var(--green-dark); border: 1.5px solid rgba(29,158,117,0.3); }
@@ -127,14 +122,13 @@
   .sendoff { font-size: 0.92rem; font-weight: 600; color: var(--text-muted); line-height: 1.7; font-style: italic; margin: 1rem 0; padding: 1rem; border-left: 3px solid var(--amber); background: var(--amber-light); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
 
   /* Buttons */
-  .btn-primary { width: 100%; padding: 15px; border-radius: var(--radius-sm); border: none; background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); color: white; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(29,158,117,0.35); transition: transform 0.12s; margin-top: 1rem; }
+  .btn-primary { width: 100%; padding: 15px; border-radius: var(--radius-sm); border: none; background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%); color: white; font-family: 'Nunito', sans-serif; font-size: 1rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(29,158,117,0.35); transition: transform 0.12s; margin-top: 1rem; display: block; }
   .btn-primary:hover { transform: translateY(-1px); }
   .btn-primary:active { transform: scale(0.98); }
   .btn-primary:disabled { background: #d1d5db; color: #9ca3af; box-shadow: none; cursor: not-allowed; transform: none; }
-  .btn-secondary { width: 100%; padding: 11px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: transparent; color: var(--text-muted); font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background 0.15s; }
+  .btn-secondary { width: 100%; padding: 11px; border-radius: var(--radius-sm); border: 1.5px solid var(--border); background: transparent; color: var(--text-muted); font-family: 'Nunito', sans-serif; font-size: 0.88rem; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background 0.15s; display: block; }
   .btn-secondary:hover { background: #f3f4f6; }
-  .btn-show { display: none; }
-  .btn-show.visible { display: block; }
+  .btn-hidden { display: none !important; }
 
   /* Loading */
   .loading { display: none; text-align: center; padding: 2rem 1rem; }
@@ -145,11 +139,9 @@
   @keyframes pop { 0%,80%,100% { transform: scale(0.6); opacity: 0.4; } 40% { transform: scale(1.1); opacity: 1; } }
   .loading-msg { font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-top: 12px; }
 
-  /* Error */
   .error-msg { display: none; font-size: 0.85rem; font-weight: 700; color: #991b1b; background: #fef2f2; border: 1.5px solid #fecaca; border-radius: var(--radius-sm); padding: 10px 14px; margin-top: 1rem; }
-
-  .footer { text-align: center; margin-top: 2rem; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
   .divider { height: 1px; background: var(--border); margin: 1.25rem 0; }
+  .footer { text-align: center; margin-top: 2rem; font-size: 0.75rem; color: var(--text-muted); font-weight: 600; }
 </style>
 </head>
 <body>
@@ -162,7 +154,7 @@
 
 <div class="main">
 
-  <!-- SCREEN 1: PROFILE SETUP -->
+  <!-- SCREEN 1: PROFILE -->
   <div class="card screen active" id="screenProfile">
     <div class="profile-hero">
       <span class="profile-emoji">🧭</span>
@@ -194,7 +186,6 @@
       </div>
       <span class="explorer-edit" onclick="showScreen('screenProfile')">Edit</span>
     </div>
-
     <div class="mode-tabs">
       <div class="tab active" id="tabPhoto" onclick="setMode('photo')">
         <span class="tab-icon">📷</span>
@@ -207,7 +198,6 @@
         <span class="tab-sub">Find nearby wonders</span>
       </div>
     </div>
-
     <div id="photoPanel">
       <div class="upload-zone">
         <input type="file" accept="image/*" id="fileInput" onchange="handleFile(event)" capture="environment" />
@@ -217,15 +207,13 @@
       </div>
       <img id="previewImg" class="preview-img" alt="Your photo" />
     </div>
-
     <div id="locationPanel" class="location-panel">
       <span class="loc-icon">🗺️</span>
       <div class="loc-status" id="locStatus">Finding your location...</div>
       <div class="loc-coords" id="locCoords"></div>
     </div>
-
     <div class="error-msg" id="homeError"></div>
-    <button class="btn-primary btn-show" id="btnDiscover" onclick="startDiscovery()">✨ Discover the story</button>
+    <button class="btn-primary btn-hidden" id="btnDiscover" onclick="startDiscovery()">✨ Discover the story</button>
   </div>
 
   <!-- SCREEN 3: OPENING STORY -->
@@ -242,6 +230,7 @@
       <div class="directions-title">Where do you want to go?</div>
       <div class="directions-sub">Choose what to unlock next</div>
       <div id="directionBtns"></div>
+      <button class="btn-secondary" onclick="goHome()" style="margin-top:1rem">↩ Start over</button>
     </div>
     <div class="error-msg" id="openingError"></div>
   </div>
@@ -250,14 +239,14 @@
   <div class="card screen" id="screenDeepStory">
     <div class="loading" id="loadingDeep">
       <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <div class="loading-msg" id="loadingDeepMsg">Unlocking the story...</div>
+      <div class="loading-msg">Unlocking the story...</div>
     </div>
     <div id="deepStoryContent" style="display:none">
       <div class="chapter-badge" id="chapterBadge">📖 The story</div>
       <div class="story-text" id="deepStoryText"></div>
       <div class="divider"></div>
-      <button class="btn-primary" onclick="startQuest()">🗺️ Begin the quest</button>
-      <button class="btn-secondary" onclick="goHome()">↩ Start over</button>
+      <div id="nextOptions"></div>
+      <button class="btn-secondary" onclick="goHome()" style="margin-top:8px">↩ Start over</button>
     </div>
     <div class="error-msg" id="deepError"></div>
   </div>
@@ -266,7 +255,7 @@
   <div class="card screen" id="screenQuest">
     <div class="loading" id="loadingQuest">
       <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
-      <div class="loading-msg" id="loadingQuestMsg">Preparing your quest...</div>
+      <div class="loading-msg">Preparing your quest...</div>
     </div>
     <div id="questContent" style="display:none">
       <div class="quest-progress" id="questProgress"></div>
@@ -274,7 +263,7 @@
       <div class="quest-question" id="questQuestion"></div>
       <div id="questChoices"></div>
       <div class="answer-feedback" id="answerFeedback"></div>
-      <button class="btn-primary btn-show" id="btnNextStep" onclick="nextQuestStep()">Continue the quest →</button>
+      <button class="btn-primary btn-hidden" id="btnNextStep" onclick="nextQuestStep()">Continue the quest →</button>
     </div>
     <div class="error-msg" id="questError"></div>
   </div>
@@ -295,202 +284,186 @@
 </div>
 
 <script>
-// ─── State ───────────────────────────────────────────────────────
-let profile = { name: '', age: '5-7' };
-let currentMode = 'photo';
-let imageBase64 = null;
-let imageMediaType = 'image/jpeg';
-let locationData = null;
-let openingStory = '';
-let chosenDirection = '';
-let deepStory = '';
-let questSteps = [];
-let currentQuestStep = 0;
-let correctAnswerIndex = -1;
-let questAnswered = false;
+  let profile = { name: '', age: '5-7' };
+  let currentMode = 'photo';
+  let imageBase64 = null;
+  let imageMediaType = 'image/jpeg';
+  let locationData = null;
+  let openingStory = '';
+  let allDirections = [];
+  let usedDirections = [];
+  let chosenDirection = '';
+  let deepStory = '';
+  let questSteps = [];
+  let currentQuestStep = 0;
+  let correctAnswerIndex = -1;
+  let questAnswered = false;
 
-// ─── Init ────────────────────────────────────────────────────────
-function init() {
-  const saved = localStorage.getItem('wq_profile');
-  if (saved) {
-    profile = JSON.parse(saved);
-    if (profile.name && profile.age) {
-      showScreen('screenHome');
-      updateExplorerBadge();
+  function init() {
+    const saved = localStorage.getItem('wq_profile');
+    if (saved) {
+      profile = JSON.parse(saved);
+      if (profile.name && profile.age) {
+        showScreen('screenHome');
+        updateExplorerBadge();
+        const btn = document.querySelector('.age-btn');
+        document.querySelectorAll('.age-btn').forEach(b => {
+          if (b.textContent.includes(profile.age.split('-')[0])) b.classList.add('selected');
+        });
+        document.getElementById('profileName').value = profile.name;
+      }
     }
   }
-}
 
-// ─── Profile ─────────────────────────────────────────────────────
-function selectAge(age, btn) {
-  profile.age = age;
-  document.querySelectorAll('.age-btn').forEach(b => b.classList.remove('selected'));
-  btn.classList.add('selected');
-}
-
-function saveProfile() {
-  const name = document.getElementById('profileName').value.trim();
-  if (!name) { alert('Please enter a name!'); return; }
-  if (!profile.age) { alert('Please select an age!'); return; }
-  profile.name = name;
-  localStorage.setItem('wq_profile', JSON.stringify(profile));
-  updateExplorerBadge();
-  showScreen('screenHome');
-  setMode('photo');
-}
-
-function updateExplorerBadge() {
-  document.getElementById('explorerName').textContent = profile.name;
-}
-
-// ─── Navigation ──────────────────────────────────────────────────
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  window.scrollTo(0, 0);
-}
-
-function goHome() {
-  imageBase64 = null;
-  locationData = null;
-  openingStory = '';
-  chosenDirection = '';
-  deepStory = '';
-  questSteps = [];
-  currentQuestStep = 0;
-  document.getElementById('previewImg').style.display = 'none';
-  document.getElementById('fileInput').value = '';
-  document.getElementById('btnDiscover').classList.remove('visible');
-  hideError('homeError');
-  showScreen('screenHome');
-  setMode('photo');
-}
-
-// ─── Mode ────────────────────────────────────────────────────────
-function setMode(mode) {
-  currentMode = mode;
-  document.getElementById('tabPhoto').classList.toggle('active', mode === 'photo');
-  document.getElementById('tabLocation').classList.toggle('active', mode === 'location');
-  document.getElementById('photoPanel').style.display = mode === 'photo' ? 'block' : 'none';
-  document.getElementById('locationPanel').style.display = mode === 'location' ? 'block' : 'none';
-  document.getElementById('btnDiscover').classList.remove('visible');
-  hideError('homeError');
-  if (mode === 'location') getLocation();
-}
-
-function getLocation() {
-  const status = document.getElementById('locStatus');
-  status.textContent = 'Getting your location...';
-  if (!navigator.geolocation) { status.textContent = 'Location not supported.'; return; }
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      locationData = { lat: pos.coords.latitude.toFixed(5), lon: pos.coords.longitude.toFixed(5) };
-      status.textContent = 'Location found — ready to explore!';
-      document.getElementById('locCoords').textContent = locationData.lat + ', ' + locationData.lon;
-      document.getElementById('btnDiscover').classList.add('visible');
-    },
-    () => { status.textContent = 'Could not get location. Please allow access.'; }
-  );
-}
-
-function handleFile(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  imageMediaType = file.type || 'image/jpeg';
-  const reader = new FileReader();
-  reader.onload = function(ev) {
-    const full = ev.target.result;
-    imageBase64 = full.split(',')[1];
-    const img = document.getElementById('previewImg');
-    img.src = full; img.style.display = 'block';
-    document.getElementById('btnDiscover').classList.add('visible');
-  };
-  reader.readAsDataURL(file);
-}
-
-// ─── API ─────────────────────────────────────────────────────────
-async function callClaude(messages, loadingId, loadingMsg) {
-  if (loadingId) {
-    document.getElementById(loadingId).style.display = 'block';
-    if (loadingMsg) document.getElementById(loadingId).querySelector('.loading-msg').textContent = loadingMsg;
-  }
-  const res = await fetch('/.netlify/functions/claude', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ messages })
-  });
-  if (!res.ok) throw new Error('Server error: ' + res.status);
-  const data = await res.json();
-  if (data.error) throw new Error(data.error.message);
-  if (loadingId) document.getElementById(loadingId).style.display = 'none';
-  return data.content[0].text;
-}
-
-// ─── Errors ──────────────────────────────────────────────────────
-function showError(id, msg) {
-  const el = document.getElementById(id);
-  el.textContent = msg; el.style.display = 'block';
-}
-function hideError(id) {
-  document.getElementById(id).style.display = 'none';
-}
-
-// ─── Discovery flow ──────────────────────────────────────────────
-async function startDiscovery() {
-  hideError('homeError');
-  showScreen('screenOpening');
-  document.getElementById('openingContent').style.display = 'none';
-  document.getElementById('loadingOpening').style.display = 'block';
-
-  if (imageBase64) {
-    const img = document.getElementById('storyImg');
-    img.src = 'data:' + imageMediaType + ';base64,' + imageBase64;
-    img.style.display = 'block';
+  function selectAge(age, btn) {
+    profile.age = age;
+    document.querySelectorAll('.age-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
   }
 
-  let messages;
-  const locationContext = locationData ? `The explorer is at coordinates ${locationData.lat}, ${locationData.lon}.` : '';
+  function saveProfile() {
+    const name = document.getElementById('profileName').value.trim();
+    if (!name) { alert('Please enter a name!'); return; }
+    if (!profile.age) { alert('Please select an age!'); return; }
+    profile.name = name;
+    localStorage.setItem('wq_profile', JSON.stringify(profile));
+    updateExplorerBadge();
+    showScreen('screenHome');
+    setMode('photo');
+  }
 
-  if (currentMode === 'photo' && imageBase64) {
-    messages = [{ role: 'user', content: [
-      { type: 'image', source: { type: 'base64', media_type: imageMediaType, data: imageBase64 } },
-      { type: 'text', text: `You are WonderQuest, a brilliant history storytelling guide. A child named ${profile.name}, aged ${profile.age}, is standing in front of something interesting. ${locationContext}
+  function updateExplorerBadge() {
+    document.getElementById('explorerName').textContent = profile.name;
+  }
 
-Your job is to deliver a short, electrifying opening that makes them desperate to know more.
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function goHome() {
+    imageBase64 = null; locationData = null;
+    openingStory = ''; chosenDirection = ''; deepStory = '';
+    allDirections = []; usedDirections = [];
+    questSteps = []; currentQuestStep = 0;
+    document.getElementById('previewImg').style.display = 'none';
+    document.getElementById('fileInput').value = '';
+    document.getElementById('btnDiscover').classList.add('btn-hidden');
+    hideError('homeError');
+    showScreen('screenHome');
+    setMode('photo');
+  }
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.getElementById('tabPhoto').classList.toggle('active', mode === 'photo');
+    document.getElementById('tabLocation').classList.toggle('active', mode === 'location');
+    document.getElementById('photoPanel').style.display = mode === 'photo' ? 'block' : 'none';
+    document.getElementById('locationPanel').style.display = mode === 'location' ? 'block' : 'none';
+    document.getElementById('btnDiscover').classList.add('btn-hidden');
+    hideError('homeError');
+    if (mode === 'location') getLocation();
+  }
+
+  function getLocation() {
+    const status = document.getElementById('locStatus');
+    status.textContent = 'Getting your location...';
+    if (!navigator.geolocation) { status.textContent = 'Location not supported.'; return; }
+    navigator.geolocation.getCurrentPosition(
+      pos => {
+        locationData = { lat: pos.coords.latitude.toFixed(5), lon: pos.coords.longitude.toFixed(5) };
+        status.textContent = 'Location found — ready to explore!';
+        document.getElementById('locCoords').textContent = locationData.lat + ', ' + locationData.lon;
+        document.getElementById('btnDiscover').classList.remove('btn-hidden');
+      },
+      () => { status.textContent = 'Could not get location. Please allow access.'; }
+    );
+  }
+
+  function handleFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    imageMediaType = file.type || 'image/jpeg';
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+      const full = ev.target.result;
+      imageBase64 = full.split(',')[1];
+      const img = document.getElementById('previewImg');
+      img.src = full; img.style.display = 'block';
+      document.getElementById('btnDiscover').classList.remove('btn-hidden');
+    };
+    reader.readAsDataURL(file);
+  }
+
+  async function callClaude(messages) {
+    const res = await fetch('/.netlify/functions/claude', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages })
+    });
+    if (!res.ok) throw new Error('Server error: ' + res.status);
+    const data = await res.json();
+    if (data.error) throw new Error(data.error.message);
+    return data.content[0].text;
+  }
+
+  function showError(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = 'block'; }
+  function hideError(id) { document.getElementById(id).style.display = 'none'; }
+
+  async function startDiscovery() {
+    hideError('homeError');
+    showScreen('screenOpening');
+    document.getElementById('openingContent').style.display = 'none';
+    document.getElementById('loadingOpening').style.display = 'block';
+
+    if (imageBase64) {
+      const img = document.getElementById('storyImg');
+      img.src = 'data:' + imageMediaType + ';base64,' + imageBase64;
+      img.style.display = 'block';
+    }
+
+    let messages;
+    if (currentMode === 'photo' && imageBase64) {
+      messages = [{ role: 'user', content: [
+        { type: 'image', source: { type: 'base64', media_type: imageMediaType, data: imageBase64 } },
+        { type: 'text', text: `You are WonderQuest, a brilliant history storytelling guide. A child named ${profile.name}, aged ${profile.age}, is standing in front of something interesting.
+
+Deliver a short, electrifying opening that makes them desperate to know more.
 
 1. Identify exactly what they are looking at
 2. Tell them in one vivid sentence what it is
-3. Drop ONE genuinely surprising, quirky, horrible, dramatic or wonderful TRUE fact about it — something most people walk past without knowing
-4. End on an unresolved tension or mystery that makes them need to know what happened next
+3. Drop ONE genuinely surprising, quirky, horrible, dramatic or wonderful TRUE fact — something most people walk past without knowing
+4. End on an unresolved tension or mystery
 
 Rules:
-- Speak directly to ${profile.name} throughout
-- Use emoji as visual anchors, not decoration
+- Speak directly to ${profile.name}
+- Use emoji as visual anchors
 - Maximum 5-6 sentences total
-- Every fact must be historically accurate — never invent history
-- End with exactly this line: "So ${profile.name}... which part of the story do you want to unlock first?"
+- Every fact must be historically accurate — never invent
+- End with exactly: "So ${profile.name}... which part of the story do you want to unlock first?"
 
-Then on a new line, output exactly this marker followed by 3 story directions:
+Then on a new line output this marker and exactly 3 directions:
 DIRECTIONS:
-[emoji] [5 word max enticing label]
-[emoji] [5 word max enticing label]  
-[emoji] [5 word max enticing label]
+[emoji] [max 5 word label]
+[emoji] [max 5 word label]
+[emoji] [max 5 word label]
 
-Base the 3 directions on genuine historical angles that actually exist for this specific place/object. Choose from: horrible, dramatic, funny, quirky, wonder. Only offer angles grounded in real history.` }
-    ]}];
-  } else if (currentMode === 'location' && locationData) {
-    messages = [{ role: 'user', content: `You are WonderQuest, a brilliant history storytelling guide. A child named ${profile.name}, aged ${profile.age}, is at coordinates ${locationData.lat}, ${locationData.lon}.
+Base directions on genuine historical angles for this specific place. Choose 3 from: horrible, dramatic, funny, quirky, wonder.` }
+      ]}];
+    } else if (currentMode === 'location' && locationData) {
+      messages = [{ role: 'user', content: `You are WonderQuest, a brilliant history storytelling guide. A child named ${profile.name}, aged ${profile.age}, is at coordinates ${locationData.lat}, ${locationData.lon}.
 
-Identify the most interesting nearby landmark, statue, or historical place.
+Identify the most interesting nearby landmark or historical place.
 
-Your job is to deliver a short, electrifying opening that makes them desperate to know more.
+Deliver a short, electrifying opening that makes them desperate to know more.
 
-1. Tell them in one vivid sentence what is nearby and what it is
-2. Drop ONE genuinely surprising, quirky, horrible, dramatic or wonderful TRUE fact about it
+1. Tell them what is nearby and what it is
+2. Drop ONE genuinely surprising TRUE fact about it
 3. End on an unresolved tension or mystery
 
 Rules:
-- Speak directly to ${profile.name} throughout
+- Speak directly to ${profile.name}
 - Use emoji as visual anchors
 - Maximum 5-6 sentences total
 - Every fact must be historically accurate
@@ -498,227 +471,272 @@ Rules:
 
 Then on a new line:
 DIRECTIONS:
-[emoji] [5 word max enticing label]
-[emoji] [5 word max enticing label]
-[emoji] [5 word max enticing label]
+[emoji] [max 5 word label]
+[emoji] [max 5 word label]
+[emoji] [max 5 word label]
 
 Base directions on genuine historical angles for this specific place.` }];
-  } else {
-    showScreen('screenHome');
-    showError('homeError', 'Please upload a photo or allow location access first.');
-    return;
+    } else {
+      showScreen('screenHome');
+      showError('homeError', 'Please upload a photo or allow location access first.');
+      return;
+    }
+
+    try {
+      const response = await callClaude(messages);
+      document.getElementById('loadingOpening').style.display = 'none';
+
+      const parts = response.split('DIRECTIONS:');
+      openingStory = parts[0].trim();
+      document.getElementById('openingText').textContent = openingStory;
+
+      const directionsRaw = parts[1] ? parts[1].trim().split('\n').filter(l => l.trim()) : [];
+      allDirections = directionsRaw.slice(0, 3).map(d => d.trim());
+      usedDirections = [];
+
+      renderDirectionButtons(document.getElementById('directionBtns'), allDirections);
+      document.getElementById('openingContent').style.display = 'block';
+    } catch(err) {
+      document.getElementById('loadingOpening').style.display = 'none';
+      showError('openingError', 'Something went wrong: ' + err.message);
+    }
   }
 
-  try {
-    const response = await callClaude(messages, null, null);
-    document.getElementById('loadingOpening').style.display = 'none';
-
-    const parts = response.split('DIRECTIONS:');
-    openingStory = parts[0].trim();
-    document.getElementById('openingText').textContent = openingStory;
-
-    const directionsRaw = parts[1] ? parts[1].trim().split('\n').filter(l => l.trim()) : [];
-    const dirBtns = document.getElementById('directionBtns');
-    dirBtns.innerHTML = '';
-    directionsRaw.slice(0, 3).forEach(dir => {
+  function renderDirectionButtons(container, directions) {
+    container.innerHTML = '';
+    directions.forEach(dir => {
       const btn = document.createElement('button');
       btn.className = 'direction-btn';
-      btn.textContent = dir.trim();
-      btn.onclick = () => chooseDirection(dir.trim());
-      dirBtns.appendChild(btn);
+      btn.textContent = dir;
+      btn.onclick = () => chooseDirection(dir);
+      container.appendChild(btn);
     });
-
-    document.getElementById('openingContent').style.display = 'block';
-  } catch(err) {
-    document.getElementById('loadingOpening').style.display = 'none';
-    showError('openingError', 'Something went wrong: ' + err.message);
   }
-}
 
-// ─── Direction chosen ────────────────────────────────────────────
-async function chooseDirection(direction) {
-  chosenDirection = direction;
-  showScreen('screenDeepStory');
-  document.getElementById('deepStoryContent').style.display = 'none';
-  document.getElementById('loadingDeep').style.display = 'block';
-  document.getElementById('chapterBadge').textContent = direction;
+  async function chooseDirection(direction) {
+    chosenDirection = direction;
+    usedDirections.push(direction);
+    showScreen('screenDeepStory');
+    document.getElementById('deepStoryContent').style.display = 'none';
+    document.getElementById('loadingDeep').style.display = 'block';
+    document.getElementById('chapterBadge').textContent = direction;
 
-  const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} (aged ${profile.age}) has chosen to explore: "${chosenDirection}"
+    const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} (aged ${profile.age}) has chosen to explore: "${chosenDirection}"
 
 Opening story context: "${openingStory}"
 
-Now tell the full story through this angle.
+Tell the full story through this angle only.
 
 Rules:
-- Horrible Histories tone — real history told with all the interesting, weird, gross, dramatic and funny bits left in
+- Horrible Histories tone — real history with all the weird, gross, dramatic and funny bits left in
 - Speak directly to ${profile.name} using their name 2-3 times
 - Ground every detail in genuine historical fact or real mythology — never invent
-- Use emoji as visual anchors at key dramatic moments
-- Point out ONE specific physical detail they can actually see right now on the object or place
+- Use emoji as visual anchors at key moments
+- Point out ONE specific physical detail they can actually see right now
 - Reveal ONE secret that most visitors never notice
-- Build to a cliffhanger that makes them desperate to start the quest
-- End with: "Are you ready to investigate, ${profile.name}? Your quest begins now... 🗺️"
-- Aim for the length and energy of a Horrible Histories page — substantial but not overwhelming` }];
+- End with a single teaser sentence that makes the remaining story angles and quest feel unmissable — do NOT launch the quest yet
+- Aim for the energy of a Horrible Histories page — substantial but not overwhelming` }];
 
-  try {
-    deepStory = await callClaude(messages, 'loadingDeep', 'Unlocking the story...');
-    document.getElementById('deepStoryText').textContent = deepStory;
-    document.getElementById('deepStoryContent').style.display = 'block';
-  } catch(err) {
-    document.getElementById('loadingDeep').style.display = 'none';
-    showError('deepError', 'Something went wrong: ' + err.message);
+    try {
+      deepStory = await callClaude(messages);
+      document.getElementById('loadingDeep').style.display = 'none';
+      document.getElementById('deepStoryText').textContent = deepStory;
+      renderNextOptions();
+      document.getElementById('deepStoryContent').style.display = 'block';
+    } catch(err) {
+      document.getElementById('loadingDeep').style.display = 'none';
+      showError('deepError', 'Something went wrong: ' + err.message);
+    }
   }
-}
 
-// ─── Quest ───────────────────────────────────────────────────────
-async function startQuest() {
-  showScreen('screenQuest');
-  document.getElementById('questContent').style.display = 'none';
-  document.getElementById('loadingQuest').style.display = 'block';
+  function renderNextOptions() {
+    const remaining = allDirections.filter(d => !usedDirections.includes(d));
+    const nextOpts = document.getElementById('nextOptions');
+    nextOpts.innerHTML = '';
 
-  const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} has explored the "${chosenDirection}" angle of this place.
+    const title = document.createElement('div');
+    title.className = 'directions-title';
+    title.textContent = 'What next?';
+    nextOpts.appendChild(title);
+
+    const sub = document.createElement('div');
+    sub.className = 'directions-sub';
+    sub.style.marginBottom = '1rem';
+    sub.textContent = remaining.length > 0 ? 'Keep exploring or begin the quest' : 'Ready to go on the quest?';
+    nextOpts.appendChild(sub);
+
+    remaining.forEach(dir => {
+      const btn = document.createElement('button');
+      btn.className = 'direction-btn';
+      btn.textContent = dir;
+      btn.onclick = () => chooseDirection(dir);
+      nextOpts.appendChild(btn);
+    });
+
+    const questBtn = document.createElement('button');
+    questBtn.className = 'btn-primary';
+    questBtn.textContent = '🗺️ Begin the quest';
+    questBtn.onclick = startQuest;
+    nextOpts.appendChild(questBtn);
+  }
+
+  async function startQuest() {
+    showScreen('screenQuest');
+    document.getElementById('questContent').style.display = 'none';
+    document.getElementById('loadingQuest').style.display = 'block';
+
+    const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} has explored the "${chosenDirection}" angle of this place.
 
 Story so far: "${deepStory}"
 
-Generate all 3 quest steps as a single JSON response. Output ONLY valid JSON, nothing else.
+Generate all 3 quest steps as a single JSON response. Output ONLY valid JSON, nothing else, no markdown fences.
 
 {
   "steps": [
     {
-      "narrative": "1-2 sentences continuing the story, as if ${profile.name} is inside the story world",
-      "question": "One clear multiple choice question answerable ONLY by physically looking at the object/place",
+      "narrative": "1-2 sentences continuing the story as if ${profile.name} is inside the story world. Reference the historical angle.",
+      "question": "One multiple choice question answerable ONLY by physically looking at the object or place right now",
       "choices": ["option A", "option B", "option C"],
       "correct": 0,
       "correct_response": "2-3 sentences confirming they found it and revealing why it matters historically",
-      "wrong_response": "1-2 sentences warm in-world nudge to look again, never use the word wrong or incorrect"
+      "wrong_response": "1-2 sentences warm in-world nudge to look again. Never use the word wrong or incorrect."
     },
-    { ... },
-    { ... }
+    {
+      "narrative": "...",
+      "question": "...",
+      "choices": ["...", "...", "..."],
+      "correct": 1,
+      "correct_response": "...",
+      "wrong_response": "..."
+    },
+    {
+      "narrative": "...",
+      "question": "...",
+      "choices": ["...", "...", "..."],
+      "correct": 2,
+      "correct_response": "...",
+      "wrong_response": "..."
+    }
   ],
-  "badge": "Personalised title earned by ${profile.name} based on what they discovered e.g. Guardian of the Chain Bridge",
-  "discoveries": ["Real historical fact they uncovered in step 1", "Real historical fact from step 2", "Real historical fact from step 3"],
-  "sendoff": "Short personal message from the story world — as if the historical figure or guardian is speaking directly to ${profile.name}, warm and triumphant, hinting at more secrets to find"
+  "badge": "Personalised title earned by ${profile.name} e.g. Guardian of the Chain Bridge",
+  "discoveries": ["Real historical fact from step 1", "Real historical fact from step 2", "Real historical fact from step 3"],
+  "sendoff": "Short message from the story world speaking directly to ${profile.name}, warm and triumphant, hinting at more secrets"
 }
 
 Rules for questions:
 - Every question must be answerable by physically looking at something visible right now
 - Never ask about dates, names, or facts they cannot see with their eyes
 - Each step should have them look at something different
-- The 3 steps should form a coherent narrative arc
-- correct is the 0-based index of the correct answer in the choices array` }];
+- correct is the 0-based index of the correct answer in choices array
+- Keep all text fields concise to avoid JSON being cut off` }];
 
-  try {
-    const raw = await callClaude(messages, 'loadingQuest', 'Preparing your quest...');
-    const cleaned = raw.replace(/```json|```/g, '').trim();
-    const data = JSON.parse(cleaned);
-    questSteps = data.steps;
-    window.questComplete = { badge: data.badge, discoveries: data.discoveries, sendoff: data.sendoff };
-    currentQuestStep = 0;
-    renderQuestStep();
-    document.getElementById('loadingQuest').style.display = 'none';
-    document.getElementById('questContent').style.display = 'block';
-  } catch(err) {
-    document.getElementById('loadingQuest').style.display = 'none';
-    showError('questError', 'Something went wrong: ' + err.message);
-  }
-}
-
-function renderQuestStep() {
-  const step = questSteps[currentQuestStep];
-  questAnswered = false;
-  correctAnswerIndex = step.correct;
-
-  // Progress dots
-  const prog = document.getElementById('questProgress');
-  prog.innerHTML = '';
-  questSteps.forEach((s, i) => {
-    if (i > 0) {
-      const line = document.createElement('div');
-      line.className = 'quest-step-line' + (i <= currentQuestStep ? ' done' : '');
-      prog.appendChild(line);
+    try {
+      const raw = await callClaude(messages);
+      const cleaned = raw.replace(/```json|```/g, '').trim();
+      const data = JSON.parse(cleaned);
+      questSteps = data.steps;
+      window.questComplete = { badge: data.badge, discoveries: data.discoveries, sendoff: data.sendoff };
+      currentQuestStep = 0;
+      document.getElementById('loadingQuest').style.display = 'none';
+      document.getElementById('questContent').style.display = 'block';
+      renderQuestStep();
+    } catch(err) {
+      document.getElementById('loadingQuest').style.display = 'none';
+      showError('questError', 'Something went wrong: ' + err.message);
     }
-    const dot = document.createElement('div');
-    dot.className = 'quest-step-dot ' + (i < currentQuestStep ? 'done' : i === currentQuestStep ? 'active' : 'pending');
-    dot.textContent = i < currentQuestStep ? '✓' : (i + 1);
-    prog.appendChild(dot);
-  });
-
-  document.getElementById('questNarrative').textContent = step.narrative;
-  document.getElementById('questQuestion').textContent = step.question;
-
-  const choicesEl = document.getElementById('questChoices');
-  choicesEl.innerHTML = '';
-  const letters = ['A', 'B', 'C'];
-  step.choices.forEach((choice, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'choice-btn';
-    btn.innerHTML = `<span class="choice-letter">${letters[i]}</span>${choice}`;
-    btn.onclick = () => selectAnswer(i, btn);
-    choicesEl.appendChild(btn);
-  });
-
-  document.getElementById('answerFeedback').style.display = 'none';
-  document.getElementById('btnNextStep').classList.remove('visible');
-}
-
-function selectAnswer(index, btn) {
-  if (questAnswered) return;
-  questAnswered = true;
-
-  const step = questSteps[currentQuestStep];
-  const allBtns = document.querySelectorAll('.choice-btn');
-  allBtns.forEach(b => b.disabled = true);
-
-  const feedback = document.getElementById('answerFeedback');
-
-  if (index === correctAnswerIndex) {
-    btn.classList.add('correct');
-    feedback.className = 'answer-feedback correct';
-    feedback.textContent = '✅ ' + step.correct_response;
-    feedback.style.display = 'block';
-    const isLast = currentQuestStep === questSteps.length - 1;
-    document.getElementById('btnNextStep').textContent = isLast ? '🏆 Complete the quest!' : 'Continue the quest →';
-    document.getElementById('btnNextStep').classList.add('visible');
-  } else {
-    btn.classList.add('wrong');
-    feedback.className = 'answer-feedback wrong';
-    feedback.textContent = '🔍 ' + step.wrong_response;
-    feedback.style.display = 'block';
-    setTimeout(() => {
-      allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong'); });
-      feedback.style.display = 'none';
-      questAnswered = false;
-    }, 2500);
   }
-}
 
-function nextQuestStep() {
-  currentQuestStep++;
-  if (currentQuestStep >= questSteps.length) {
-    showQuestComplete();
-  } else {
-    renderQuestStep();
-    document.getElementById('btnNextStep').classList.remove('visible');
+  function renderQuestStep() {
+    const step = questSteps[currentQuestStep];
+    questAnswered = false;
+    correctAnswerIndex = step.correct;
+
+    const prog = document.getElementById('questProgress');
+    prog.innerHTML = '';
+    questSteps.forEach((s, i) => {
+      if (i > 0) {
+        const line = document.createElement('div');
+        line.className = 'quest-step-line' + (i <= currentQuestStep ? ' done' : '');
+        prog.appendChild(line);
+      }
+      const dot = document.createElement('div');
+      dot.className = 'quest-step-dot ' + (i < currentQuestStep ? 'done' : i === currentQuestStep ? 'active' : 'pending');
+      dot.textContent = i < currentQuestStep ? '✓' : (i + 1);
+      prog.appendChild(dot);
+    });
+
+    document.getElementById('questNarrative').textContent = step.narrative;
+    document.getElementById('questQuestion').textContent = step.question;
+
+    const choicesEl = document.getElementById('questChoices');
+    choicesEl.innerHTML = '';
+    const letters = ['A', 'B', 'C'];
+    step.choices.forEach((choice, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.innerHTML = `<span class="choice-letter">${letters[i]}</span>${choice}`;
+      btn.onclick = () => selectAnswer(i, btn);
+      choicesEl.appendChild(btn);
+    });
+
     document.getElementById('answerFeedback').style.display = 'none';
+    document.getElementById('btnNextStep').classList.add('btn-hidden');
   }
-}
 
-function showQuestComplete() {
-  const qc = window.questComplete;
-  showScreen('screenComplete');
-  document.getElementById('badgeName').textContent = qc.badge;
+  function selectAnswer(index, btn) {
+    if (questAnswered) return;
+    questAnswered = true;
 
-  const discBox = document.getElementById('discoveriesBox');
-  discBox.innerHTML = '<div class="discoveries-title">🔍 What you discovered</div>';
-  qc.discoveries.forEach(d => {
-    discBox.innerHTML += `<div class="discovery-item"><span class="discovery-bullet">✦</span>${d}</div>`;
-  });
+    const step = questSteps[currentQuestStep];
+    const allBtns = document.querySelectorAll('.choice-btn');
+    allBtns.forEach(b => b.disabled = true);
 
-  document.getElementById('sendoffText').textContent = qc.sendoff;
-}
+    const feedback = document.getElementById('answerFeedback');
 
-// ─── Start ───────────────────────────────────────────────────────
-init();
+    if (index === correctAnswerIndex) {
+      btn.classList.add('correct');
+      feedback.className = 'answer-feedback correct';
+      feedback.textContent = '✅ ' + step.correct_response;
+      feedback.style.display = 'block';
+      const isLast = currentQuestStep === questSteps.length - 1;
+      const nextBtn = document.getElementById('btnNextStep');
+      nextBtn.textContent = isLast ? '🏆 Complete the quest!' : 'Continue the quest →';
+      nextBtn.classList.remove('btn-hidden');
+    } else {
+      btn.classList.add('wrong');
+      feedback.className = 'answer-feedback wrong';
+      feedback.textContent = '🔍 ' + step.wrong_response;
+      feedback.style.display = 'block';
+      setTimeout(() => {
+        allBtns.forEach(b => { b.disabled = false; b.classList.remove('wrong', 'correct'); });
+        feedback.style.display = 'none';
+        questAnswered = false;
+      }, 2500);
+    }
+  }
+
+  function nextQuestStep() {
+    currentQuestStep++;
+    if (currentQuestStep >= questSteps.length) {
+      showQuestComplete();
+    } else {
+      renderQuestStep();
+    }
+  }
+
+  function showQuestComplete() {
+    const qc = window.questComplete;
+    showScreen('screenComplete');
+    document.getElementById('badgeName').textContent = qc.badge;
+    const discBox = document.getElementById('discoveriesBox');
+    discBox.innerHTML = '<div class="discoveries-title">🔍 What you discovered</div>';
+    qc.discoveries.forEach(d => {
+      discBox.innerHTML += `<div class="discovery-item"><span class="discovery-bullet">✦</span>${d}</div>`;
+    });
+    document.getElementById('sendoffText').textContent = qc.sendoff;
+  }
+
+  init();
 </script>
 </body>
 </html>
