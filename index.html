@@ -427,55 +427,20 @@
     if (currentMode === 'photo' && imageBase64) {
       messages = [{ role: 'user', content: [
         { type: 'image', source: { type: 'base64', media_type: imageMediaType, data: imageBase64 } },
-        { type: 'text', text: `You are WonderQuest, a brilliant history storytelling guide. A child named ${profile.name}, aged ${profile.age}, is standing in front of something interesting.
-
-Deliver a short, electrifying opening that makes them desperate to know more.
-
-1. Identify exactly what they are looking at
-2. Tell them in one vivid sentence what it is
-3. Drop ONE genuinely surprising, quirky, horrible, dramatic or wonderful TRUE fact — something most people walk past without knowing
-4. End on an unresolved tension or mystery
-
-Rules:
-- Speak directly to ${profile.name}
-- Use emoji as visual anchors
-- Maximum 5-6 sentences total
-- Every fact must be historically accurate — never invent
-- End with exactly: "So ${profile.name}... which part of the story do you want to unlock first?"
-
-Then on a new line output this marker and exactly 3 directions:
+        { type: 'text', text: `You are WonderQuest. Child: ${profile.name}, age ${profile.age}. Identify what's in this photo and write 3-4 punchy sentences: what it is, ONE true surprising/horrible/funny/dramatic fact most people don't know, an unresolved mystery. End exactly: "So ${profile.name}... which part of the story do you want to unlock first?" Use emoji. Facts must be accurate. Then write:
 DIRECTIONS:
-[emoji] [max 5 word label]
-[emoji] [max 5 word label]
-[emoji] [max 5 word label]
-
-Base directions on genuine historical angles for this specific place. Choose 3 from: horrible, dramatic, funny, quirky, wonder.` }
+[emoji] [max 5 words]
+[emoji] [max 5 words]
+[emoji] [max 5 words]
+Base on 3 real historical angles for this place.` }
       ]}];
     } else if (currentMode === 'location' && locationData) {
-      messages = [{ role: 'user', content: `You are WonderQuest, a brilliant history storytelling guide. A child named ${profile.name}, aged ${profile.age}, is at coordinates ${locationData.lat}, ${locationData.lon}.
-
-Identify the most interesting nearby landmark or historical place.
-
-Deliver a short, electrifying opening that makes them desperate to know more.
-
-1. Tell them what is nearby and what it is
-2. Drop ONE genuinely surprising TRUE fact about it
-3. End on an unresolved tension or mystery
-
-Rules:
-- Speak directly to ${profile.name}
-- Use emoji as visual anchors
-- Maximum 5-6 sentences total
-- Every fact must be historically accurate
-- End with exactly: "So ${profile.name}... which part of the story do you want to unlock first?"
-
-Then on a new line:
+      messages = [{ role: 'user', content: `You are WonderQuest. Child: ${profile.name}, age ${profile.age}. Location: ${locationData.lat}, ${locationData.lon}. Identify the most interesting nearby landmark. Write 3-4 punchy sentences: what it is, ONE true surprising/horrible/funny fact most don't know, an unresolved mystery. End exactly: "So ${profile.name}... which part of the story do you want to unlock first?" Use emoji. Facts must be accurate. Then write:
 DIRECTIONS:
-[emoji] [max 5 word label]
-[emoji] [max 5 word label]
-[emoji] [max 5 word label]
-
-Base directions on genuine historical angles for this specific place.` }];
+[emoji] [max 5 words]
+[emoji] [max 5 words]
+[emoji] [max 5 words]
+Base on 3 real historical angles for this place.` }];
     } else {
       showScreen('screenHome');
       showError('homeError', 'Please upload a photo or allow location access first.');
@@ -521,21 +486,16 @@ Base directions on genuine historical angles for this specific place.` }];
     document.getElementById('loadingDeep').style.display = 'block';
     document.getElementById('chapterBadge').textContent = direction;
 
-    const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} (aged ${profile.age}) has chosen to explore: "${chosenDirection}"
+    const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} (age ${profile.age}) chose: "${chosenDirection}". Context: "${openingStory.substring(0, 300)}"
 
-Opening story context: "${openingStory}"
-
-Tell the full story through this angle only.
-
-Rules:
-- Horrible Histories tone — real history with all the weird, gross, dramatic and funny bits left in
-- Speak directly to ${profile.name} using their name 2-3 times
-- Ground every detail in genuine historical fact or real mythology — never invent
-- Use emoji as visual anchors at key moments
-- Point out ONE specific physical detail they can actually see right now
-- Reveal ONE secret that most visitors never notice
-- End with a single teaser sentence that makes the remaining story angles and quest feel unmissable — do NOT launch the quest yet
-- Aim for the energy of a Horrible Histories page — substantial but not overwhelming` }];
+Tell the story through this angle in 150-200 words max. Rules:
+- Horrible Histories tone — real, weird, gross, dramatic, funny
+- Use ${profile.name}'s name once or twice
+- Every fact must be real — never invent
+- Use emoji at key moments
+- Name ONE physical detail they can see right now
+- ONE secret most visitors miss
+- End with one teaser sentence hinting at the quest and other story angles` }];
 
     try {
       deepStory = await callClaude(messages);
