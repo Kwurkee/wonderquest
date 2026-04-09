@@ -582,61 +582,51 @@ Rules:
 
   async function startQuest() {
     showScreen('screenQuest');
+    currentQuestStep = 0;
+    questSteps = [];
+    window.questDiscoveries = [];
+    await generateQuestStep();
+  }
+
+  async function generateQuestStep() {
     document.getElementById('questContent').style.display = 'none';
     document.getElementById('loadingQuest').style.display = 'block';
+    document.getElementById('loadingQuest').querySelector('.loading-msg').textContent =
+      currentQuestStep === 0 ? 'Your quest begins...' : 'The next challenge awaits...';
 
-    const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} has explored the "${chosenDirection}" angle of this place.
+    const stepNum = currentQuestStep + 1;
+    const prevDiscoveries = window.questDiscoveries.length > 0
+      ? 'Previous discoveries: ' + window.questDiscoveries.join(' | ')
+      : '';
 
-Story so far (summary): "${deepStory.substring(0, 500)}"
+    const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} is on quest step ${stepNum} of 3 at a place connected to: "${chosenDirection}".
 
-Generate all 3 quest steps as a single JSON response. Output ONLY valid JSON, nothing else, no markdown fences.
+Context: "${deepStory.substring(0, 400)}"
+${prevDiscoveries}
+
+Generate ONLY this single quest step as JSON. Output ONLY valid JSON, no markdown.
 
 {
-  "steps": [
-    {
-      "narrative": "1-2 sentences continuing the story as if ${profile.name} is inside the story world. Reference the historical angle.",
-      "question": "One multiple choice question answerable ONLY by physically looking at the object or place right now",
-      "choices": ["option A", "option B", "option C"],
-      "correct": 0,
-      "correct_response": "2-3 sentences confirming they found it and revealing why it matters historically",
-      "wrong_response": "1-2 sentences warm in-world nudge to look again. Never use the word wrong or incorrect."
-    },
-    {
-      "narrative": "...",
-      "question": "...",
-      "choices": ["...", "...", "..."],
-      "correct": 1,
-      "correct_response": "...",
-      "wrong_response": "..."
-    },
-    {
-      "narrative": "...",
-      "question": "...",
-      "choices": ["...", "...", "..."],
-      "correct": 2,
-      "correct_response": "...",
-      "wrong_response": "..."
-    }
-  ],
-  "badge": "Personalised title earned by ${profile.name} e.g. Guardian of the Chain Bridge",
-  "discoveries": ["Real historical fact from step 1", "Real historical fact from step 2", "Real historical fact from step 3"],
-  "sendoff": "Short message from the story world speaking directly to ${profile.name}, warm and triumphant, hinting at more secrets"
+  "narrative": "1-2 sentences continuing the story as if ${profile.name} is inside the story world",
+  "question": "One question answerable ONLY by physically looking at something visible right now",
+  "choices": ["option A", "option B", "option C"],
+  "correct": 0,
+  "correct_response": "2 sentences confirming they found it and why it matters historically",
+  "wrong_response": "1 sentence warm in-world nudge to look again, never say wrong or incorrect",
+  "discovery": "The real historical fact they just uncovered in one sentence"
 }
 
-Rules for questions:
-- Every question must be answerable by physically looking at something visible right now
-- Never ask about dates, names, or facts they cannot see with their eyes
-- Each step should have them look at something different
-- correct is the 0-based index of the correct answer in choices array
-- Keep all text fields concise to avoid JSON being cut off` }];
+Rules:
+- Question must be about something physically visible and countable right now
+- Never ask about dates or facts they cannot see
+- correct is 0-based index of correct answer
+- Keep all text short and punchy` }];
 
     try {
       const raw = await callClaude(messages);
       const cleaned = raw.replace(/```json|```/g, '').trim();
-      const data = JSON.parse(cleaned);
-      questSteps = data.steps;
-      window.questComplete = { badge: data.badge, discoveries: data.discoveries, sendoff: data.sendoff };
-      currentQuestStep = 0;
+      const step = JSON.parse(cleaned);
+      questSteps[currentQuestStep] = step;
       document.getElementById('loadingQuest').style.display = 'none';
       document.getElementById('questContent').style.display = 'block';
       renderQuestStep();
@@ -653,7 +643,7 @@ Rules for questions:
 
     const prog = document.getElementById('questProgress');
     prog.innerHTML = '';
-    questSteps.forEach((s, i) => {
+    for (let i = 0; i < 3; i++) {
       if (i > 0) {
         const line = document.createElement('div');
         line.className = 'quest-step-line' + (i <= currentQuestStep ? ' done' : '');
@@ -663,7 +653,7 @@ Rules for questions:
       dot.className = 'quest-step-dot ' + (i < currentQuestStep ? 'done' : i === currentQuestStep ? 'active' : 'pending');
       dot.textContent = i < currentQuestStep ? '✓' : (i + 1);
       prog.appendChild(dot);
-    });
+    }
 
     document.getElementById('questNarrative').textContent = step.narrative;
     document.getElementById('questQuestion').textContent = step.question;
@@ -698,7 +688,8 @@ Rules for questions:
       feedback.className = 'answer-feedback correct';
       feedback.textContent = '✅ ' + step.correct_response;
       feedback.style.display = 'block';
-      const isLast = currentQuestStep === questSteps.length - 1;
+      if (step.discovery) window.questDiscoveries.push(step.discovery);
+      const isLast = currentQuestStep === 2;
       const nextBtn = document.getElementById('btnNextStep');
       nextBtn.textContent = isLast ? '🏆 Complete the quest!' : 'Continue the quest →';
       nextBtn.classList.remove('btn-hidden');
@@ -715,25 +706,53 @@ Rules for questions:
     }
   }
 
-  function nextQuestStep() {
+  async function nextQuestStep() {
     currentQuestStep++;
-    if (currentQuestStep >= questSteps.length) {
-      showQuestComplete();
+    if (currentQuestStep >= 3) {
+      await generateQuestComplete();
     } else {
-      renderQuestStep();
+      await generateQuestStep();
     }
   }
 
-  function showQuestComplete() {
-    const qc = window.questComplete;
+  async function generateQuestComplete() {
+    showScreen('screenQuest');
+    document.getElementById('questContent').style.display = 'none';
+    document.getElementById('loadingQuest').style.display = 'block';
+    document.getElementById('loadingQuest').querySelector('.loading-msg').textContent = 'Completing your quest...';
+
+    const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} just completed a quest exploring "${chosenDirection}".
+
+Discoveries made: ${window.questDiscoveries.join(' | ')}
+
+Generate quest completion as JSON. Output ONLY valid JSON, no markdown.
+
+{
+  "badge": "Personalised title earned by ${profile.name} based on what they discovered e.g. Guardian of the Chain Bridge",
+  "sendoff": "2-3 sentences from the story world speaking directly to ${profile.name}, warm and triumphant, hinting at more secrets to find"
+}` }];
+
+    try {
+      const raw = await callClaude(messages);
+      const cleaned = raw.replace(/```json|```/g, '').trim();
+      const data = JSON.parse(cleaned);
+      document.getElementById('loadingQuest').style.display = 'none';
+      showQuestComplete(data.badge, data.sendoff);
+    } catch(err) {
+      document.getElementById('loadingQuest').style.display = 'none';
+      showQuestComplete('Master Explorer', 'Amazing work, ' + profile.name + '! You uncovered secrets that most people never find.');
+    }
+  }
+
+  function showQuestComplete(badge, sendoff) {
     showScreen('screenComplete');
-    document.getElementById('badgeName').textContent = qc.badge;
+    document.getElementById('badgeName').textContent = badge;
     const discBox = document.getElementById('discoveriesBox');
     discBox.innerHTML = '<div class="discoveries-title">🔍 What you discovered</div>';
-    qc.discoveries.forEach(d => {
+    window.questDiscoveries.forEach(d => {
       discBox.innerHTML += `<div class="discovery-item"><span class="discovery-bullet">✦</span>${d}</div>`;
     });
-    document.getElementById('sendoffText').textContent = qc.sendoff;
+    document.getElementById('sendoffText').textContent = sendoff;
   }
 
   init();
