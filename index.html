@@ -587,7 +587,7 @@ Rules:
 
     const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} has explored the "${chosenDirection}" angle of this place.
 
-Story so far: "${deepStory}"
+Story so far (summary): "${deepStory.substring(0, 500)}"
 
 Generate all 3 quest steps as a single JSON response. Output ONLY valid JSON, nothing else, no markdown fences.
 
