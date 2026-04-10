@@ -200,13 +200,15 @@
     </div>
     <div id="photoPanel">
       <div class="upload-zone">
-        <input type="file" accept="image/*" id="fileInput" onchange="handleFile(event, false)" />
-        <input type="file" accept="image/*" id="fileInputCamera" onchange="handleFile(event, true)" capture="environment" style="display:none" />
-        <span class="upload-icon">🖼️</span>
-        <div class="upload-text">Choose from photo library</div>
-        <div class="upload-hint">A statue, building, sign — anything interesting</div>
+        <input type="file" accept="image/*" id="fileInputCamera" onchange="handleFile(event, true)" capture="environment" />
+        <input type="file" accept="image/*" id="fileInput" onchange="handleFile(event, false)" style="display:none" />
+        <span class="upload-icon">📷</span>
+        <div class="upload-text">Take a photo</div>
+        <div class="upload-hint">Point at anything interesting</div>
       </div>
-      <button class="btn-secondary" style="margin-top:8px" onclick="document.getElementById('fileInputCamera').click()">📷 Take a new photo</button>
+      <div style="text-align:center;margin-top:8px">
+        <span style="font-size:0.8rem;color:var(--text-muted);font-weight:700;cursor:pointer;text-decoration:underline" onclick="document.getElementById('fileInput').click()">or choose from photo library</span>
+      </div>
       <img id="previewImg" class="preview-img" alt="Your photo" />
     </div>
     <div id="locationPanel" class="location-panel">
@@ -455,11 +457,15 @@
         { type: 'image', source: { type: 'base64', media_type: imageMediaType, data: imageBase64 } },
         { type: 'text', text: `You are WonderQuest. Child: ${profile.name}, age ${profile.age}. ${locationHint}
 
-Read ANY text visible in this image — signs, plaques, labels, inscriptions — and use them alongside the GPS coordinates (if provided) as location clues. Make your best specific identification of the place or object, committing confidently even if not 100% certain.
+Read ANY text visible in this image — signs, plaques, labels, inscriptions — and use them alongside the GPS coordinates (if provided) as location clues to identify the place.
 
-Write 3-4 punchy sentences: what it specifically is, ONE fact that is truly surprising/horrible/funny/dramatic about THIS specific place, and an unresolved mystery. End with exactly: "So ${profile.name}... which part of the story do you want to unlock first?"
+If you can confidently identify the specific place: tell its real history in 3-4 punchy sentences — what it is, ONE truly surprising/horrible/funny/dramatic fact about THIS place, and an unresolved mystery.
 
-Truth rules — non-negotiable: every fact must be a real historical event, a documented myth, or a genuine local legend that truly exists. Mythology and folklore count only if they genuinely exist — never invent them. Make clear when something is legend not fact. If uncertain, describe what is interesting and visible — never fabricate events, deaths, or named individuals.
+If you cannot confidently identify it: describe what you can see, what it appears to represent, and tell the story of the broader area or the type of place it seems to be. Never guess and present it as fact.
+
+End with exactly: "So ${profile.name}... which part of the story do you want to unlock first?"
+
+Truth rules — non-negotiable: every fact must be a real historical event, a documented myth, or a genuine local legend that truly exists. Mythology and folklore count only if they genuinely exist — never invent them. Make clear when something is legend not fact. Never fabricate events, deaths, or named individuals.
 
 Use emoji. Then write:
 DIRECTIONS:
