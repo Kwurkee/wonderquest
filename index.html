@@ -200,11 +200,13 @@
     </div>
     <div id="photoPanel">
       <div class="upload-zone">
-        <input type="file" accept="image/*" id="fileInput" onchange="handleFile(event)" capture="environment" />
+        <input type="file" accept="image/*" id="fileInput" onchange="handleFile(event, false)" />
+        <input type="file" accept="image/*" id="fileInputCamera" onchange="handleFile(event, true)" capture="environment" style="display:none" />
         <span class="upload-icon">🖼️</span>
-        <div class="upload-text">Tap to take a photo or choose one</div>
+        <div class="upload-text">Choose from photo library</div>
         <div class="upload-hint">A statue, building, sign — anything interesting</div>
       </div>
+      <button class="btn-secondary" style="margin-top:8px" onclick="document.getElementById('fileInputCamera').click()">📷 Take a new photo</button>
       <img id="previewImg" class="preview-img" alt="Your photo" />
     </div>
     <div id="locationPanel" class="location-panel">
@@ -392,7 +394,7 @@
     );
   }
 
-  function handleFile(e) {
+  function handleFile(e, fromCamera) {
     const file = e.target.files[0];
     if (!file) return;
     imageMediaType = 'image/jpeg';
@@ -414,6 +416,7 @@
         document.getElementById('btnDiscover').classList.remove('btn-hidden');
       };
       img.src = ev.target.result;
+      if (!fromCamera) locationData = null;
     };
     reader.readAsDataURL(file);
   }
