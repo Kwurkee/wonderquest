@@ -310,6 +310,36 @@
   let correctAnswerIndex = -1;
   let questAnswered = false;
 
+  // ─── VOICE & TONE RULES (shared across all prompts) ───────────────────────
+  function getVoiceRules(name, age) {
+    const ageGuidance = age === '5-7'
+      ? `Writing for a 5-7 year old: use simple words, short punchy sentences, lead with the single most jaw-dropping fact. Lean heavily into wonder, magic, and drama. Make them feel like they've stumbled into the world's greatest secret.`
+      : age === '8-10'
+      ? `Writing for an 8-10 year old: more history detail, bigger dramatic stakes, light humour. They can handle complexity if it's wrapped in a cracking story.`
+      : `Writing for an 11-13 year old: treat them almost like a clever adult. More nuance, darker history moments, genuine intrigue. They'll see through anything that talks down to them.`;
+
+    return `
+VOICE & TONE — NON-NEGOTIABLE:
+You are the storytelling voice of WonderQuest. Write like Roald Dahl narrating a history documentary for children. Conspiratorial. Warm. Slightly mischievous. As if you're letting ${name} in on something adults have forgotten to find remarkable.
+
+Your formula: 50% real history (specific, true, grounded facts) + 35% wonder (awe, mystery, secrets most people walk past) + 15% Horrible Histories (a dash of the grim, the gross, the dramatic, the surprising).
+
+${ageGuidance}
+
+NEVER do any of these:
+- Never explain how you identified the place. Never say "based on the text I can see" or "I can't identify this from the photo" or anything that breaks the magic.
+- If uncertain about a location, lean into mystery ("Legend has it this place has many names...") rather than admitting uncertainty.
+- Never start with "Welcome to..." or any tourist-guide opener.
+- Never use the words "fascinating" or "interesting".
+- Never summarise what you just said.
+- Never sound like a teacher or a textbook.
+
+ALWAYS open by dropping ${name} directly into a moment — a smell, a sound, a single vivid image from history. Make them feel like they've just arrived somewhere, not been told about somewhere.
+
+TRUTH RULES — non-negotiable: every fact must be a real historical event, a documented myth, or a genuine local legend. Mythology and folklore count only if they genuinely exist. Make clear when something is legend not fact. Never fabricate events, deaths, or named individuals.`;
+  }
+  // ──────────────────────────────────────────────────────────────────────────
+
   function init() {
     const saved = localStorage.getItem('wq_profile');
     if (saved) {
@@ -317,7 +347,6 @@
       if (profile.name && profile.age) {
         showScreen('screenHome');
         updateExplorerBadge();
-        const btn = document.querySelector('.age-btn');
         document.querySelectorAll('.age-btn').forEach(b => {
           if (b.textContent.includes(profile.age.split('-')[0])) b.classList.add('selected');
         });
@@ -381,9 +410,7 @@
   function getLocationSilent() {
     if (!navigator.geolocation) return;
     navigator.geolocation.getCurrentPosition(
-      pos => {
-        locationData = { lat: pos.coords.latitude.toFixed(5), lon: pos.coords.longitude.toFixed(5) };
-      },
+      pos => { locationData = { lat: pos.coords.latitude.toFixed(5), lon: pos.coords.longitude.toFixed(5) }; },
       () => {}
     );
   }
@@ -458,45 +485,51 @@
       img.style.display = 'block';
     }
 
+    const voiceRules = getVoiceRules(profile.name, profile.age);
     let messages;
+
     if (currentMode === 'photo' && imageBase64) {
-      const locationHint = locationData ? `The device GPS coordinates are ${locationData.lat}, ${locationData.lon} — use this alongside the image to make the most accurate identification possible.` : '';
+      const locationHint = locationData
+        ? `The device GPS coordinates are ${locationData.lat}, ${locationData.lon} — use this alongside the image to make the most accurate identification possible.`
+        : '';
       messages = [{ role: 'user', content: [
         { type: 'image', source: { type: 'base64', media_type: imageMediaType, data: imageBase64 } },
-        { type: 'text', text: `You are WonderQuest. Child: ${profile.name}, age ${profile.age}. ${locationHint}
+        { type: 'text', text: `${voiceRules}
 
-Read ANY text visible in this image — signs, plaques, labels, inscriptions — and use them alongside the GPS coordinates (if provided) as location clues to identify the place.
+${locationHint}
 
-If you can confidently identify the specific place: tell its real history in 3-4 punchy sentences — what it is, ONE truly surprising/horrible/funny/dramatic fact about THIS place, and an unresolved mystery.
+Read ANY text visible in this image — signs, plaques, labels, inscriptions — and use them alongside GPS coordinates (if provided) as location clues.
 
-If you cannot confidently identify it: describe what you can see, what it appears to represent, and tell the story of the broader area or the type of place it seems to be. Never guess and present it as fact.
+Write the opening story in 3-4 sentences in the WonderQuest voice. Drop ${profile.name} directly into a dramatic moment from history. Include ONE fact that is genuinely surprising, grim, or astonishing. End with one unresolved mystery that makes them desperate to know more.
+
+End the story with exactly: "So ${profile.name}... which part of the story do you want to unlock first?"
+
+Then write:
+DIRECTIONS:
+[emoji] [max 5 words]
+[emoji] [max 5 words]
+[emoji] [max 5 words]
+
+Base the 3 directions on real historical angles for this specific place.` }
+      ]}];
+    } else if (currentMode === 'location' && locationData) {
+      messages = [{ role: 'user', content: `${voiceRules}
+
+Location coordinates: ${locationData.lat}, ${locationData.lon}
+
+Identify the most interesting nearby landmark or historical place. Commit confidently to a specific identification.
+
+Write the opening story in 3-4 sentences in the WonderQuest voice. Drop ${profile.name} directly into a dramatic moment from history. Include ONE fact that is genuinely surprising, grim, or astonishing. End with one unresolved mystery that makes them desperate to know more.
 
 End with exactly: "So ${profile.name}... which part of the story do you want to unlock first?"
 
-Truth rules — non-negotiable: every fact must be a real historical event, a documented myth, or a genuine local legend that truly exists. Mythology and folklore count only if they genuinely exist — never invent them. Make clear when something is legend not fact. Never fabricate events, deaths, or named individuals.
-
-Use emoji. Then write:
+Then write:
 DIRECTIONS:
 [emoji] [max 5 words]
 [emoji] [max 5 words]
 [emoji] [max 5 words]
-Base on 3 real historical angles for this place.` }
-      ]}];
-    } else if (currentMode === 'location' && locationData) {
-      messages = [{ role: 'user', content: `You are WonderQuest. Child: ${profile.name}, age ${profile.age}. Location: ${locationData.lat}, ${locationData.lon}.
 
-Identify the most interesting nearby landmark or historical place, committing confidently to a specific identification.
-
-Write 3-4 punchy sentences: what it specifically is, ONE fact that is truly surprising/horrible/funny/dramatic about THIS specific place, and an unresolved mystery. End with exactly: "So ${profile.name}... which part of the story do you want to unlock first?"
-
-Truth rules — non-negotiable: every fact must be a real historical event, a documented myth, or a genuine local legend that truly exists. Mythology and folklore count only if they genuinely exist — never invent them. Make clear when something is legend not fact. If uncertain, describe what is interesting — never fabricate.
-
-Use emoji. Then write:
-DIRECTIONS:
-[emoji] [max 5 words]
-[emoji] [max 5 words]
-[emoji] [max 5 words]
-Base on 3 real historical angles for this place.` }];
+Base the 3 directions on real historical angles for this specific place.` }];
     } else {
       showScreen('screenHome');
       showError('homeError', 'Please upload a photo or allow location access first.');
@@ -542,16 +575,20 @@ Base on 3 real historical angles for this place.` }];
     document.getElementById('loadingDeep').style.display = 'block';
     document.getElementById('chapterBadge').textContent = direction;
 
-    const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} (age ${profile.age}) chose: "${chosenDirection}". Context: "${openingStory.substring(0, 300)}"
+    const voiceRules = getVoiceRules(profile.name, profile.age);
 
-Tell the story through this angle in 150-200 words max. Rules:
-- Horrible Histories tone — real, weird, gross, dramatic, funny
+    const messages = [{ role: 'user', content: `${voiceRules}
+
+${profile.name} (age ${profile.age}) chose: "${chosenDirection}".
+Opening story context: "${openingStory.substring(0, 300)}"
+
+Tell the story through this angle in 150-200 words. Rules:
+- Write in the WonderQuest voice — Roald Dahl meets Horrible Histories
 - Use ${profile.name}'s name once or twice
-- Every fact must be real — never invent
-- Use emoji at key moments
-- Name ONE physical detail they can see right now
-- ONE secret most visitors miss
-- End with one teaser sentence hinting at the quest and other story angles` }];
+- Use emoji at key dramatic moments
+- Name ONE physical detail they can actually see right now at the location
+- Reveal ONE secret most visitors walk straight past
+- End with a single teaser sentence hinting at the quest ahead and what other story angles remain to unlock` }];
 
     try {
       deepStory = await callClaude(messages);
@@ -615,28 +652,25 @@ Tell the story through this angle in 150-200 words max. Rules:
       ? 'Previous discoveries: ' + window.questDiscoveries.join(' | ')
       : '';
 
-    const messages = [{ role: 'user', content: `You are WonderQuest. ${profile.name} is on quest step ${stepNum} of 3 at a place connected to: "${chosenDirection}".
+    const voiceRules = getVoiceRules(profile.name, profile.age);
 
-Context: "${deepStory.substring(0, 400)}"
+    const messages = [{ role: 'user', content: `${voiceRules}
+
+${profile.name} is on quest step ${stepNum} of 3. The story angle is: "${chosenDirection}".
+Story context: "${deepStory.substring(0, 400)}"
 ${prevDiscoveries}
 
-Generate ONLY this single quest step as JSON. Output ONLY valid JSON, no markdown.
+Generate ONLY this single quest step as JSON. Output ONLY valid JSON, no markdown, no explanation.
 
 {
-  "narrative": "1-2 sentences continuing the story as if ${profile.name} is inside the story world",
-  "question": "One question answerable ONLY by physically looking at something visible right now",
+  "narrative": "1-2 sentences in the WonderQuest voice — continuing the story as if ${profile.name} is inside the story world, building dramatic tension",
+  "question": "One question ${profile.name} can ONLY answer by physically looking at something visible right now at this location — never ask about dates or facts, only observable things",
   "choices": ["option A", "option B", "option C"],
   "correct": 0,
-  "correct_response": "2 sentences confirming they found it and why it matters historically",
-  "wrong_response": "1 sentence warm in-world nudge to look again, never say wrong or incorrect",
-  "discovery": "The real historical fact they just uncovered in one sentence"
-}
-
-Rules:
-- Question must be about something physically visible and countable right now
-- Never ask about dates or facts they cannot see
-- correct is 0-based index of correct answer
-- Keep all text short and punchy` }];
+  "correct_response": "2 sentences in the WonderQuest voice confirming the discovery and revealing why it matters historically",
+  "wrong_response": "1 warm in-world nudge to look again — never use the words wrong or incorrect",
+  "discovery": "The real historical fact ${profile.name} just uncovered, in one sentence"
+}` }];
 
     try {
       const raw = await callClaude(messages);
@@ -744,8 +778,8 @@ Discoveries made: ${window.questDiscoveries.join(' | ')}
 Generate quest completion as JSON. Output ONLY valid JSON, no markdown.
 
 {
-  "badge": "Personalised title earned by ${profile.name} based on what they discovered e.g. Guardian of the Chain Bridge",
-  "sendoff": "2-3 sentences from the story world speaking directly to ${profile.name}, warm and triumphant, hinting at more secrets to find"
+  "badge": "A personalised title earned by ${profile.name} based on what they discovered — dramatic and specific, e.g. Guardian of the Chain Bridge or Keeper of the Lost Vault",
+  "sendoff": "2-3 sentences speaking directly to ${profile.name} from the story world — warm, triumphant, slightly mysterious, hinting that there are more secrets here that most people will never find"
 }` }];
 
     try {
