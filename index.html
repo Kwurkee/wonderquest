@@ -186,6 +186,13 @@
       </div>
       <span class="explorer-edit" onclick="showScreen('screenProfile')">Edit</span>
     </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:1.25rem;padding:8px 14px;background:#f9f9f7;border-radius:var(--radius-sm);border:1px solid var(--border)">
+      <span style="font-size:0.82rem;font-weight:800;color:var(--text-muted)">AI</span>
+      <select id="aiToggle" style="flex:1;font-family:'Nunito',sans-serif;font-size:0.85rem;font-weight:700;color:var(--text);background:white;border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer;outline:none">
+        <option value="claude">Claude (Anthropic)</option>
+        <option value="openai">GPT-4o (OpenAI)</option>
+      </select>
+    </div>
     <div class="mode-tabs">
       <div class="tab active" id="tabPhoto" onclick="setMode('photo')">
         <span class="tab-icon">📷</span>
@@ -424,15 +431,16 @@
   }
 
   async function callClaude(messages) {
+    const provider = document.getElementById('aiToggle').value;
     const res = await fetch('/.netlify/functions/claude', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ messages })
+      body: JSON.stringify({ messages, provider })
     });
     if (!res.ok) throw new Error('Server error: ' + res.status);
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
-    return data.content[0].text;
+    return data.text;
   }
 
   function showError(id, msg) { const el = document.getElementById(id); el.textContent = msg; el.style.display = 'block'; }
